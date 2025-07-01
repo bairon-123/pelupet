@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Pelupet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2 class="ion-text-center">Reserva Pelupet!</h2>
+  <p class="ion-text-center">🐾</p>
+
+  <!-- Nombre del perro -->
+  <ion-item>
+    <ion-label position="floating">Nombre del perro</ion-label>
+    <ion-input [(ngModel)]="nombrePerro" required></ion-input>
+  </ion-item>
+
+  <!-- Raza -->
+  <ion-item>
+    <ion-label position="floating">Raza</ion-label>
+    <ion-input [(ngModel)]="raza" required></ion-input>
+  </ion-item>
+
+  <!-- Tamaño -->
+<ion-item>
+  <ion-label>Tamaño</ion-label>
+  <ion-select [(ngModel)]="tamano" interface="action-sheet">
+    <ion-select-option value="Pequeño">Pequeño</ion-select-option>
+    <ion-select-option value="Mediano">Mediano</ion-select-option>
+    <ion-select-option value="Grande">Grande</ion-select-option>
+  </ion-select>
+</ion-item>
+
+  <!-- Tipo de Servicio -->
+  <ion-item>
+    <ion-label>Tipo de Servicio</ion-label>
+    <ion-select [(ngModel)]="tipoServicio" interface="action-sheet">
+      <ion-select-option value="Express">Express</ion-select-option>
+      <ion-select-option value="Completo">Completo</ion-select-option>
+      <ion-select-option value="Premium">Premium</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Peso -->
+  <ion-item>
+    <ion-label position="floating">Peso (kg)</ion-label>
+    <ion-input type="number" min="1" [(ngModel)]="peso"></ion-input>
+  </ion-item>
+
+  <!-- Indicaciones -->
+  <ion-item>
+    <ion-label position="floating">Indicaciones</ion-label>
+    <ion-textarea [(ngModel)]="indicaciones"></ion-textarea>
+  </ion-item>
+
+  <!-- Fecha y Hora -->
+  <ion-item>
+    <ion-label position="stacked">Fecha y Hora</ion-label>
+  </ion-item>
+  <ion-datetime
+    presentation="date-time"
+    [min]="minDate"
+    [(ngModel)]="fechaHora">
+  </ion-datetime>
+
+  <!-- Botón Agendar -->
+  <ion-button expand="block" color="primary" class="ion-margin-top" (click)="guardarReserva()">
+    Agendar
+  </ion-button>
+  
+  <!-- Botón Volver -->
+  <ion-button expand="block" color="medium" (click)="irHome()" class="ion-margin-top">
+    Volver a Inicio
+  </ion-button>
+</ion-content>

@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Pelupet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding animacion-home">
+
+  <div class="ion-text-center fade-up delay-0">
+    <h2>Perfil Pelupet!</h2>
+    <p>🐾</p>
+  </div>
+
+  
+  <!-- Imagen de perfil -->
+<!-- Imagen ya guardada en BD -->
+<ion-card *ngIf="foto && !fotoPreview">
+  <ion-img [src]="foto" style="width: 150px; height: 150px; border-radius: 50%; margin: auto; border: 3px solid #ffc107;"></ion-img>
+</ion-card>
+
+<!-- Imagen recién tomada aún no guardada -->
+<ion-card *ngIf="fotoPreview">
+  <ion-img [src]="fotoPreview" style="width: 150px; height: 150px; border-radius: 50%; margin: auto; border: 3px solid #17a2b8;"></ion-img>
+</ion-card>
+
+<ion-button expand="block" color="tertiary" (click)="tomarFoto()">
+  Tomar Foto de Perfil
+</ion-button>
+
+<ion-button *ngIf="fotoPreview" expand="block" color="success" (click)="guardarFoto()">
+  Guardar Foto
+</ion-button>
+
+  <!-- Información del usuario -->
+  <ion-card class="fade-in-up">
+    <ion-card-header>
+      <ion-card-title>Información del Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>
+          <p><strong>Nombre de Usuario:</strong> {{ usuario.nombreUsuario || 'No disponible' }}</p>
+          <p><strong>Correo:</strong> {{ usuario.correo || 'No disponible' }}</p>
+          <p><strong>Rol:</strong> {{ usuario.rol === 'admin' ? 'Administrador' : 'Usuario' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Listado de reservas si es necesario -->
+<ion-card *ngIf="reservas.length > 0">
+  <ion-card-header>
+    <ion-card-title>Reservas Agendadas</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item *ngFor="let reserva of reservas">
+      <ion-label>
+        <h2>🐶 {{ reserva.nombre_perro }}</h2>
+        <p><strong>Raza:</strong> {{ reserva.raza }}</p>
+        <p><strong>Tamaño:</strong> {{ reserva.tamano }}</p>
+        <p><strong>Peso:</strong> {{ reserva.peso }} kg</p>
+        <p><strong>Servicio:</strong> {{ reserva.tipo_servicio }}</p>
+        <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
+        <p><strong>Hora:</strong> {{ reserva.hora }}</p>
+        <p *ngIf="reserva.indicaciones"><strong>Indicaciones:</strong> {{ reserva.indicaciones }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+
+  <!-- Botón volver -->
+  <ion-button expand="block" color="medium" (click)="irHome()" class="ion-margin-top fade-in-up">
+    Volver a Inicio
+  </ion-button>
+</ion-content>
