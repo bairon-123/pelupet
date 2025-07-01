@@ -1,41 +1,20 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { DbTaskService } from 'src/app/services/db-task.service';
-
-import {
-  IonContent,
-  IonButton,
-  IonToolbar,
-  IonHeader,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonTitle
-} from '@ionic/angular/standalone';
-
+import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import { IonicModule, NavController } from '@ionic/angular'; // Asegúrate de importar NavController
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ubicacion',
   standalone: true,
-  imports: [
-  IonContent,
-  IonButton,
-  IonToolbar,
-  IonHeader,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonTitle
-  ],
+  imports: [IonicModule, CommonModule],
   templateUrl: './ubicacion.component.html',
   styleUrls: ['./ubicacion.component.scss'],
 })
-export class UbicacionPage {
-  constructor(private router: Router, private db: DbTaskService) {}
+export class UbicacionPage implements AfterViewInit {
 
-  async ngOnInit() {
+  constructor(private navCtrl: NavController) {} // <-- Agrega esto
+
+  ngAfterViewInit() {
     this.cargarMapa();
   }
 
@@ -54,15 +33,12 @@ export class UbicacionPage {
 
       L.marker([coords.lat, coords.lng])
         .addTo(map)
-        .bindPopup('📍 Tu ubicación actual')
+        .bindPopup('Tu ubicación actual')
         .openPopup();
-    }, (error) => {
-      console.error('❌ No se pudo obtener la ubicación:', error);
-      alert('No se pudo obtener tu ubicación. Asegúrate de habilitar el GPS.');
     });
   }
 
-  irHome() {
-    this.router.navigateByUrl('/home', { replaceUrl: true });
+  irHome(): void {
+    this.navCtrl.navigateBack('/home');
   }
 }
