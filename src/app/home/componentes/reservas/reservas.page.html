@@ -8,63 +8,64 @@
   <h2 class="ion-text-center">Reserva Pelupet!</h2>
   <p class="ion-text-center">🐾</p>
 
- <!-- Nombre del perro -->
-<ion-item>
-  <ion-label position="floating">Nombre del perro</ion-label>
-  <ion-input data-cy="input-nombre" [(ngModel)]="nombrePerro" required></ion-input>
-</ion-item>
+  <!-- Nombre del perro -->
+  <ion-item>
+    <ion-label position="floating">Nombre del perro</ion-label>
+    <ion-input id="input-nombre" data-cy="input-nombre" [(ngModel)]="nombrePerro" required></ion-input>
+  </ion-item>
 
-<!-- Raza -->
-<ion-item>
-  <ion-label position="floating">Raza</ion-label>
-  <ion-input data-cy="input-raza" [(ngModel)]="raza" required></ion-input>
-</ion-item>
+  <!-- Raza -->
+  <ion-item>
+    <ion-label position="floating">Raza</ion-label>
+    <ion-input id="input-raza" data-cy="input-raza" [(ngModel)]="raza" required></ion-input>
+  </ion-item>
 
-<!-- Tamaño -->
-<ion-item>
-  <ion-label>Tamaño</ion-label>
-  <ion-select data-cy="select-tamano" [(ngModel)]="tamano" interface="action-sheet">
-    <ion-select-option value="Pequeño">Pequeño</ion-select-option>
-    <ion-select-option value="Mediano">Mediano</ion-select-option>
-    <ion-select-option value="Grande">Grande</ion-select-option>
-  </ion-select>
-</ion-item>
+  <!-- Tamaño -->
+  <ion-item>
+    <ion-label>Tamaño</ion-label>
+    <ion-select id="select-tamano" data-cy="select-tamano" [(ngModel)]="tamano" interface="action-sheet">
+      <ion-select-option value="Pequeño">Pequeño</ion-select-option>
+      <ion-select-option value="Mediano">Mediano</ion-select-option>
+      <ion-select-option value="Grande">Grande</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-<!-- Tipo de Servicio -->
-<ion-item>
-  <ion-label>Tipo de Servicio</ion-label>
-  <ion-select data-cy="select-servicio" [(ngModel)]="tipoServicio" interface="action-sheet">
-    <ion-select-option value="Express">Express</ion-select-option>
-    <ion-select-option value="Completo">Completo</ion-select-option>
-    <ion-select-option value="Premium">Premium</ion-select-option>
-  </ion-select>
-</ion-item>
+  <!-- Tipo de Servicio -->
+  <ion-item>
+    <ion-label>Tipo de Servicio</ion-label>
+    <ion-select id="select-servicio" data-cy="select-servicio" [(ngModel)]="tipoServicio" interface="action-sheet">
+      <ion-select-option value="Express">Express</ion-select-option>
+      <ion-select-option value="Completo">Completo</ion-select-option>
+      <ion-select-option value="Premium">Premium</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-<!-- Peso -->
-<ion-item>
-  <ion-label position="floating">Peso (kg)</ion-label>
-  <ion-input data-cy="input-peso" type="number" min="1" [(ngModel)]="peso"></ion-input>
-</ion-item>
+  <!-- Peso -->
+  <ion-item>
+    <ion-label position="floating">Peso (kg)</ion-label>
+    <ion-input id="input-peso" data-cy="input-peso" type="number" min="1" [(ngModel)]="peso"></ion-input>
+  </ion-item>
 
-<!-- Indicaciones -->
-<ion-item>
-  <ion-label position="floating">Indicaciones</ion-label>
-  <ion-textarea data-cy="textarea-indicaciones" [(ngModel)]="indicaciones"></ion-textarea>
-</ion-item>
+  <!-- Indicaciones -->
+  <ion-item>
+    <ion-label position="floating">Indicaciones</ion-label>
+    <ion-textarea id="textarea-indicaciones" data-cy="textarea-indicaciones" [(ngModel)]="indicaciones"></ion-textarea>
+  </ion-item>
 
-<!-- Fecha y Hora -->
-<ion-datetime
-  data-cy="input-fecha"
-  presentation="date-time"
-  [min]="minDate"
-  [(ngModel)]="fechaHora">
-</ion-datetime>
+  <!-- Fecha y Hora -->
+  <ion-datetime
+    id="input-fecha"
+    data-cy="input-fecha"
+    presentation="date-time"
+    [min]="minDate"
+    [(ngModel)]="fechaHora">
+  </ion-datetime>
 
   <!-- Botón Agendar -->
   <ion-button expand="block" color="primary" class="ion-margin-top" (click)="guardarReserva()">
     Agendar
   </ion-button>
-  
+
   <!-- Botón Volver -->
   <ion-button expand="block" color="medium" (click)="irHome()" class="ion-margin-top">
     Volver a Inicio

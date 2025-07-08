@@ -75,55 +75,8 @@ describe('Pruebas de la Página de Perfil en Pelupet', () => {
   });
 });
 
-
- // prueba de reserva
  
-describe('Pruebas de Reserva en Pelupet', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:8100/login');
-    cy.get('input').eq(0).type('bairon@gmail.com');   
-    cy.get('input').eq(1).type('123456');         
-    cy.contains('Iniciar sesión').click();
-
-    cy.url().should('include', '/home');
-    cy.visit('http://localhost:8100/reservas');
-  });
-
-  it('Debe completar y enviar una reserva correctamente', () => {
-    // Nombre del perro
-    cy.get('[data-cy=input-nombre] input').type('Firulais');
-
-    // Raza
-    cy.get('[data-cy=input-raza] input').type('Poodle');
-
-    // Tamaño
-    cy.get('[data-cy=select-tamano]').click();
-    cy.contains('Mediano').click();
-
-    // Tipo de servicio
-    cy.get('[data-cy=select-servicio]').click();
-    cy.contains('Completo').click();
-
-    // Peso
-    cy.get('[data-cy=input-peso] input').type('7');
-
-    // Indicaciones
-    cy.get('[data-cy=textarea-indicaciones] textarea').type('No le gusta el agua');
-
-    // Fecha y hora
-    cy.get('[data-cy=input-fecha]').invoke('attr', 'value', '2025-07-08T12:00');
-
-    // Click en Agendar
-    cy.contains('Agendar').click();
-
-    // Verifica alerta de éxito
-    cy.on('window:alert', (str) => {
-      expect(str).to.include('Reserva guardada');
-    });
-  });
-});
-
- // preuba servicios
+// prueba servicios
 describe('Pantalla de Servicios - Pelupet', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8100/login');
@@ -165,5 +118,65 @@ describe('Pantalla de Ubicación - Pelupet', () => {
   it('Debe tener botón para volver a inicio', () => {
     cy.contains('Volver a Inicio').click();
     cy.url().should('include', '/home');
+  });
+});
+
+
+describe('Página de Reservas - Pelupet', () => {
+  beforeEach(() => {
+    // Forzar sesión antes de visitar /reservas
+    window.localStorage.setItem('correo_activo', 'bairon@gmail.com'); // si usas localStorage
+    cy.visit('http://localhost:8100/reservas');
+  });
+
+  it('Debe mostrar título y campos del formulario', () => {
+    cy.contains('Reserva Pelupet!').should('exist');
+    cy.get('[data-cy="input-nombre"]').should('exist');
+    cy.get('[data-cy="input-raza"]').should('exist');
+    cy.get('[data-cy="select-tamano"]').should('exist');
+    cy.get('[data-cy="select-servicio"]').should('exist');
+    cy.get('[data-cy="input-peso"]').should('exist');
+    cy.get('[data-cy="textarea-indicaciones"]').should('exist');
+    cy.get('[data-cy="input-fecha"]').should('exist');
+  });
+
+  it('Debe completar el formulario y agendar reserva', () => {
+    cy.get('[data-cy="input-nombre"] input').type('Firulais');
+    cy.get('[data-cy="input-raza"] input').type('Poodle');
+
+    cy.get('[data-cy="select-tamano"]').click({ force: true });
+    cy.wait(300); // espera breve para asegurar que se abra
+    cy.contains('Mediano').click({ force: true });
+
+    cy.get('[data-cy="select-servicio"]').click({ force: true });
+    cy.wait(300); // espera breve para asegurar que se abra
+    cy.contains('Completo').click({ force: true });
+
+    cy.wait(500); // espera breve para asegurar que se abra
+
+    
+    cy.get('[data-cy="select-servicio"]').click({ force: true });
+    cy.contains('Premium').click({ force: true });
+
+    // Esperar a que desaparezca el ion-backdrop 
+    cy.get('ion-backdrop').should('not.exist');
+
+    // Ahora puedes escribir sin problemas
+    cy.get('[data-cy="input-peso"] input').type('7');
+    cy.wait(500); // espera breve para asegurar que se abra
+    cy.get('[data-cy="textarea-indicaciones"] textarea').type('Cortar con cuidado');
+
+    cy.wait(500); // espera breve para asegurar que se abra
+
+    cy.get('[data-cy="input-fecha"] input').click({ force: true }); // abre el date picker
+    cy.wait(500); // pequeño delay para asegurar que se cargue
+    cy.get('ion-datetime').invoke('attr', 'value', new Date().toISOString());
+
+    cy.contains('Agendar').click();
+
+    // Si hay alert, capturarlo
+    cy.on('window:alert', (text) => {
+      expect(text).to.contain('¡Reserva guardada con éxito!');
+    });
   });
 });

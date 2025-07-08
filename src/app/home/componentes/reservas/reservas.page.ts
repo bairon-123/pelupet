@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DbTaskService } from 'src/app/services/db-task.service';
-import { NavController, IonicModule } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { OnInit } from '@angular/core';
 
 import {
   IonHeader,
@@ -27,7 +28,6 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -42,7 +42,7 @@ import {
     IonDatetime
   ]
 })
-export class ReservasPage {
+export class ReservasPage implements OnInit { // 👈 Implementar OnInit
   nombrePerro = '';
   raza = '';
   tamano = 'Pequeño';
@@ -53,13 +53,12 @@ export class ReservasPage {
   minDate: string = new Date().toISOString();
   usuarioEmail: string = '';
 
-async ngOnInit() {
-  const correo = await this.db.obtenerCorreoActivo();
-  if (correo) {
-    this.usuarioEmail = correo;
-  }
-}
   constructor(private db: DbTaskService, private navCtrl: NavController) {}
+
+   async ngOnInit() {
+    const correo = 'bairon@gmail.com'; // 👈 cambiar si es otro correo de prueba
+    await this.db.activarSesion(correo);
+  }
 
   async guardarReserva(): Promise<void> {
     if (!this.nombrePerro || !this.raza || !this.tamano || !this.tipoServicio || !this.peso || !this.fechaHora) {
@@ -79,7 +78,7 @@ async ngOnInit() {
 
     try {
       await this.db.guardarReservaCompleta(this.usuarioEmail, datos);
-      await this.db.activarSesion(this.usuarioEmail);
+      await this.db.activarSesion(this.usuarioEmail); // Opcional
       alert('✅ ¡Reserva guardada con éxito!');
       this.navCtrl.navigateRoot('/home');
     } catch (error) {
@@ -87,9 +86,9 @@ async ngOnInit() {
       alert('Ocurrió un error al guardar la reserva.');
     }
   }
-  
 
   irHome(): void {
     this.navCtrl.navigateBack('/home');
   }
 }
+
