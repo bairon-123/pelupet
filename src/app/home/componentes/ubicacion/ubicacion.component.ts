@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import { IonicModule, NavController } from '@ionic/angular'; // Asegúrate de importar NavController
+import { IonicModule, NavController } from '@ionic/angular'; 
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class UbicacionPage implements AfterViewInit {
 
-  constructor(private navCtrl: NavController) {} // <-- Agrega esto
+  constructor(private navCtrl: NavController) {}
 
   ngAfterViewInit() {
     this.cargarMapa();
@@ -42,3 +42,5 @@ export class UbicacionPage implements AfterViewInit {
     this.navCtrl.navigateBack('/home');
   }
 }
+
+

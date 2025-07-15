@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DbTaskService } from '../services/db-task.service'; // Asegúrate de que esta ruta es correcta
+import { DbTaskService } from '../services/db-task.service';
 
-// Ionic UI Components
 import {
   IonContent,
   IonItem,
@@ -44,10 +43,21 @@ export class LoginPage {
   }
 
   async login() {
-    const correoValido = 'bairon@gmail.com';
-    const claveValida = '123456';
+    if (!this.email || !this.password) {
+      alert('⚠️ Por favor, completa todos los campos.');
+      return;
+    }
 
-    if (this.email === correoValido && this.password === claveValida) {
+    const valido = await this.db.validarCredenciales(this.email, this.password);
+    if (valido) {
+      const usuario = await this.db.obtenerUsuarioPorCorreo(this.email);
+
+      if (usuario) {
+        localStorage.setItem('nombreUsuario', usuario.nombre ?? '');
+        localStorage.setItem('correoUsuario', usuario.email ?? '');
+        localStorage.setItem('rolUsuario', usuario.rol ?? 'usuario');
+      }
+
       await this.db.activarSesion(this.email);
       this.router.navigateByUrl('/home', { replaceUrl: true });
     } else {

@@ -122,10 +122,11 @@ describe('Pantalla de Ubicación - Pelupet', () => {
 });
 
 
+ // prueba reservas
 describe('Página de Reservas - Pelupet', () => {
   beforeEach(() => {
-    // Forzar sesión antes de visitar /reservas
-    window.localStorage.setItem('correo_activo', 'bairon@gmail.com'); // si usas localStorage
+
+    window.localStorage.setItem('correo_activo', 'bairon@gmail.com'); 
     cy.visit('http://localhost:8100/reservas');
   });
 
@@ -145,36 +146,33 @@ describe('Página de Reservas - Pelupet', () => {
     cy.get('[data-cy="input-raza"] input').type('Poodle');
 
     cy.get('[data-cy="select-tamano"]').click({ force: true });
-    cy.wait(300); // espera breve para asegurar que se abra
+    cy.wait(300); 
     cy.contains('Mediano').click({ force: true });
 
     cy.get('[data-cy="select-servicio"]').click({ force: true });
-    cy.wait(300); // espera breve para asegurar que se abra
+    cy.wait(300);
     cy.contains('Completo').click({ force: true });
 
-    cy.wait(500); // espera breve para asegurar que se abra
+    cy.wait(500); 
 
     
     cy.get('[data-cy="select-servicio"]').click({ force: true });
     cy.contains('Premium').click({ force: true });
 
-    // Esperar a que desaparezca el ion-backdrop 
     cy.get('ion-backdrop').should('not.exist');
 
-    // Ahora puedes escribir sin problemas
     cy.get('[data-cy="input-peso"] input').type('7');
-    cy.wait(500); // espera breve para asegurar que se abra
+    cy.wait(500); 
     cy.get('[data-cy="textarea-indicaciones"] textarea').type('Cortar con cuidado');
 
-    cy.wait(500); // espera breve para asegurar que se abra
+    cy.wait(500); 
 
-    cy.get('[data-cy="input-fecha"] input').click({ force: true }); // abre el date picker
-    cy.wait(500); // pequeño delay para asegurar que se cargue
+    cy.get('[data-cy="input-fecha"] input').click({ force: true }); 
+    cy.wait(500); 
     cy.get('ion-datetime').invoke('attr', 'value', new Date().toISOString());
 
     cy.contains('Agendar').click();
 
-    // Si hay alert, capturarlo
     cy.on('window:alert', (text) => {
       expect(text).to.contain('¡Reserva guardada con éxito!');
     });

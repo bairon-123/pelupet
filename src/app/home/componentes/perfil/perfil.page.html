@@ -48,23 +48,16 @@
   </ion-card>
 
   <!-- Listado de reservas si es necesario -->
-<ion-card *ngIf="reservas.length > 0">
+<ion-card *ngFor="let r of reservas">
   <ion-card-header>
-    <ion-card-title>Reservas Agendadas</ion-card-title>
+    <ion-card-title>🐶 {{ r.nombrePerro }} ({{ r.raza }})</ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <ion-item *ngFor="let reserva of reservas">
-      <ion-label>
-        <h2>🐶 {{ reserva.nombre_perro }}</h2>
-        <p><strong>Raza:</strong> {{ reserva.raza }}</p>
-        <p><strong>Tamaño:</strong> {{ reserva.tamano }}</p>
-        <p><strong>Peso:</strong> {{ reserva.peso }} kg</p>
-        <p><strong>Servicio:</strong> {{ reserva.tipo_servicio }}</p>
-        <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
-        <p><strong>Hora:</strong> {{ reserva.hora }}</p>
-        <p *ngIf="reserva.indicaciones"><strong>Indicaciones:</strong> {{ reserva.indicaciones }}</p>
-      </ion-label>
-    </ion-item>
+    <p><strong>Tamaño:</strong> {{ r.tamano }}</p>
+    <p><strong>Peso:</strong> {{ r.peso }} kg</p>
+    <p><strong>Servicio:</strong> {{ r.tipoServicio }}</p>
+    <p><strong>Fecha/Hora:</strong> {{ r.fechaHora }}</p>
+    <p><strong>Indicaciones:</strong> {{ r.indicaciones || 'Ninguna' }}</p>
   </ion-card-content>
 </ion-card>
 
