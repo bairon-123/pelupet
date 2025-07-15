@@ -21,11 +21,12 @@ export class DbTaskService {
 
 await db.executeSql(
   `CREATE TABLE IF NOT EXISTS usuarios (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE,
-    password TEXT,
-    rol TEXT DEFAULT 'usuario',
-    activo TEXT
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE,
+  password TEXT,
+  nombre TEXT,
+  rol TEXT DEFAULT 'usuario',
+  activo TEXT
   )`, []
 );
 
@@ -37,7 +38,6 @@ await db.executeSql(
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
        );`, []
       );
-
 
 
 await db.executeSql(`
@@ -63,12 +63,12 @@ await db.executeSql(`
     }
   }
 
-async registrarUsuario(email: string, password: string, rol: string = 'usuario'): Promise<void> {
+async registrarUsuario(nombre: string, email: string, password: string, rol: string = 'usuario'): Promise<void> {
   if (!this.dbInstance) return;
   try {
     await this.dbInstance.executeSql(
-      'INSERT INTO usuarios (email, password, rol, activo) VALUES (?, ?, ?, ?)',
-      [email, password, rol, 'false']
+      'INSERT INTO usuarios (nombre, email, password, rol, activo) VALUES (?, ?, ?, ?, ?)',
+      [nombre, email, password, rol, 'false']
     );
   } catch (error) {
     console.error('❌ Error registrando usuario', error);
@@ -103,6 +103,27 @@ async obtenerReserva(email: string): Promise<any | null> {
   );
 
   return reservaRes.rows.length > 0 ? reservaRes.rows.item(0) : null;
+}
+
+async obtenerReservasUsuario(email: string): Promise<any[]> {
+  if (!this.dbInstance) return [];
+
+  const res = await this.dbInstance.executeSql('SELECT id FROM usuarios WHERE email = ?', [email]);
+  if (res.rows.length === 0) return [];
+
+  const userId = res.rows.item(0).id;
+
+  const reservasRes = await this.dbInstance.executeSql(
+    'SELECT * FROM reservas WHERE usuario_id = ? ORDER BY id DESC',
+    [userId]
+  );
+
+  const reservas: any[] = [];
+  for (let i = 0; i < reservasRes.rows.length; i++) {
+    reservas.push(reservasRes.rows.item(i));
+  }
+
+  return reservas;
 }
 
   async activarSesion(email: string): Promise<void> {
@@ -236,24 +257,6 @@ async obtenerFotoUsuario(correo: string): Promise<string | null> {
   return null;
 }
 
-async obtenerReservasUsuario(email: string): Promise<any[]> {
-  if (!this.dbInstance) return [];
-
-  const res = await this.dbInstance.executeSql('SELECT id FROM usuarios WHERE email = ?', [email]);
-  if (res.rows.length === 0) return [];
-
-  const userId = res.rows.item(0).id;
-  const reservaRes = await this.dbInstance.executeSql(
-    'SELECT * FROM reservas WHERE usuario_id = ?',
-    [userId]
-  );
-
-  const reservas: any[] = [];
-  for (let i = 0; i < reservaRes.rows.length; i++) {
-    reservas.push(reservaRes.rows.item(i));
-  }
-  return reservas;
-}
 
   async cerrarSesion(): Promise<void> {
     if (!this.dbInstance) return;

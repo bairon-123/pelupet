@@ -55,10 +55,11 @@ export class ReservasPage implements OnInit { // 👈 Implementar OnInit
 
   constructor(private db: DbTaskService, private navCtrl: NavController) {}
 
-   async ngOnInit() {
-    const correo = 'bairon@gmail.com'; // 👈 cambiar si es otro correo de prueba
-    await this.db.activarSesion(correo);
-  }
+async ngOnInit() {
+  const correo = 'bairon@gmail.com'; // cambiar por el que estés usando
+  await this.db.activarSesion(correo);
+  this.usuarioEmail = correo; // ✅ esta línea es fundamental
+}
 
   async guardarReserva(): Promise<void> {
     if (!this.nombrePerro || !this.raza || !this.tamano || !this.tipoServicio || !this.peso || !this.fechaHora) {

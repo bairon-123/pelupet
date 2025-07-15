@@ -51,18 +51,21 @@ export class PerfilPage {
 
   constructor(private router: Router, private db: DbTaskService) {}
 
-  async ionViewWillEnter(): Promise<void> {
-    const nombre = localStorage.getItem('nombreUsuario');
-    const correo = localStorage.getItem('correoUsuario');
-    const rol = localStorage.getItem('rolUsuario');
+async ionViewWillEnter(): Promise<void> {
+  const usuarioActivo = await this.db.obtenerUsuarioActivo();
 
-    this.usuario.nombreUsuario = nombre ?? 'Usuario desconocido';
-    this.usuario.correo = correo ?? 'Sin correo';
-    this.usuario.rol = rol ?? 'usuario';
+  if (usuarioActivo) {
+    this.usuario.nombreUsuario = usuarioActivo.nombre ?? 'Sin nombre';
+    this.usuario.correo = usuarioActivo.email;
+    this.usuario.rol = usuarioActivo.rol;
 
-    this.foto = await this.db.obtenerFotoUsuario(this.usuario.correo);
-    this.reservas = await this.db.obtenerReservasUsuario(this.usuario.correo);
+    this.foto = await this.db.obtenerFotoUsuario(usuarioActivo.email);
+    this.reservas = await this.db.obtenerReservasUsuario(usuarioActivo.email);
+  } else {
+    alert('❌ No se encontró sesión activa');
+    this.router.navigateByUrl('/login');
   }
+}
 
   async tomarFoto() {
     const image = await Camera.getPhoto({
@@ -84,7 +87,10 @@ export class PerfilPage {
     }
   }
 
+  
+
   irHome(): void {
     this.router.navigateByUrl('/home');
   }
 }
+
