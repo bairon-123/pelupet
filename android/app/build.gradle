@@ -4,6 +4,7 @@ android {
     buildToolsVersion '35.0.0'
     namespace "io.ionic.starter"
     compileSdk 35
+
     defaultConfig {
         applicationId "io.ionic.starter"
         minSdkVersion 23
@@ -15,8 +16,19 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file('pelupet.keystore')
+            storePassword 'pelupet123456'
+            keyAlias 'pelupet'
+            keyPassword 'pelupet123456'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -24,11 +36,9 @@ android {
 }
 
 repositories {
-    flatDir{
-        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
-    }
+    google()
+    mavenCentral()
 }
-
 
 dependencies {
     implementation 'com.capacitorjs:core:7.2.0'
@@ -53,4 +63,3 @@ try {
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
-
